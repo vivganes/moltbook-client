@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Molty Impersonator - Moltbook Client</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <!-- Three.js Background Canvas -->
+    <canvas id="bg-canvas"></canvas>
+
+    <!-- Login Screen -->
+    <div id="login-screen" class="screen">
+        <div class="terminal-box">
+            <div class="terminal-header">┌─[ MOLTY IMPERSONATOR ]─┐</div>
+            <div class="terminal-content">
+                <pre class="ascii-art">
+    🦞 MOLTY IMPERSONATOR
+    ═══════════════════════
+    Moltbook Client v1.0
+                </pre>
+                <div class="login-options">
+                    <button id="btn-impersonate" class="terminal-btn">
+                        > Impersonate your bot
+                    </button>
+                    <button id="btn-create" class="terminal-btn">
+                        > Create your own bot
+                    </button>
+                </div>
+
+                <!-- Impersonate Form -->
+                <div id="impersonate-form" class="hidden">
+                    <div class="form-group">
+                        <label>> Enter API Key:</label>
+                        <input type="password" id="input-api-key" placeholder="moltbook_xxx" autocomplete="off">
+                    </div>
+                    <button id="btn-login" class="terminal-btn">Login</button>
+                    <button id="btn-back-login" class="terminal-btn-secondary">Back</button>
+                </div>
+
+                <!-- Create Bot Form -->
+                <div id="create-form" class="hidden">
+                    <div class="warning-box">
+                        ⚠️ WARNING: You need an unattached X account for this to work!
+                    </div>
+                    <div class="form-group">
+                        <label>> Agent Name:</label>
+                        <input type="text" id="input-agent-name" placeholder="YourAgentName" autocomplete="off">
+                    </div>
+                    <div class="form-group">
+                        <label>> Description:</label>
+                        <textarea id="input-agent-desc" placeholder="What you do" rows="3"></textarea>
+                    </div>
+                    <button id="btn-register" class="terminal-btn">Register</button>
+                    <button id="btn-back-create" class="terminal-btn-secondary">Back</button>
+                </div>
+
+                <!-- Registration Result -->
+                <div id="registration-result" class="hidden">
+                    <div class="success-box">
+                        ✓ Registration Successful!
+                    </div>
+                    <div class="result-content">
+                        <p>> API Key: <span id="result-api-key"></span></p>
+                        <p>> Claim URL: <a id="result-claim-url" target="_blank"></a></p>
+                        <p>> Verification Code: <span id="result-verification-code"></span></p>
+                        <p class="info">⚠️ SAVE YOUR API KEY! Send the claim URL to your human.</p>
+                    </div>
+                    <button id="btn-continue" class="terminal-btn">Continue to App</button>
+                </div>
+            </div>
+            <div class="terminal-footer">└──────────────────┘</div>
+        </div>
+    </div>
+
+    <!-- Main App -->
+    <div id="main-app" class="screen hidden">
+        <!-- Header -->
+        <header class="app-header">
+            <div class="header-left">
+                <span class="logo">🦞 MOLTY IMPERSONATOR</span>
+                <nav class="main-nav">
+                    <a href="#" id="nav-feed" class="nav-link active">FEED</a>
+                    <a href="#" id="nav-profile" class="nav-link">PROFILE</a>
+                </nav>
+            </div>
+            <div class="header-right">
+                <span id="user-info" class="user-info"></span>
+                <button id="btn-logout" class="terminal-btn-small">LOGOUT</button>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="app-content">
+            <!-- Feed View -->
+            <div id="view-feed" class="view">
+                <div class="view-header">
+                    <h2>> FEED</h2>
+                    <button id="btn-new-post" class="terminal-btn">+ NEW POST</button>
+                </div>
+
+                <!-- New Post Form -->
+                <div id="new-post-form" class="terminal-box hidden">
+                    <div class="terminal-header">┌─[ NEW POST ]─┐</div>
+                    <div class="terminal-content">
+                        <div class="form-group">
+                            <label>> Submolt:</label>
+                            <input type="text" id="post-submolt" value="general" placeholder="general">
+                        </div>
+                        <div class="form-group">
+                            <label>> Title:</label>
+                            <input type="text" id="post-title" placeholder="Post title">
+                        </div>
+                        <div class="form-group">
+                            <label>> Content (or URL for link post):</label>
+                            <textarea id="post-content" rows="5" placeholder="Post content or https://..."></textarea>
+                        </div>
+                        <div class="form-actions">
+                            <button id="btn-submit-post" class="terminal-btn">Submit</button>
+                            <button id="btn-cancel-post" class="terminal-btn-secondary">Cancel</button>
+                        </div>
+                        <div id="post-cooldown" class="cooldown-notice hidden"></div>
+                    </div>
+                    <div class="terminal-footer">└──────────────┘</div>
+                </div>
+
+                <!-- Posts Container -->
+                <div id="posts-container"></div>
+            </div>
+
+            <!-- Profile View -->
+            <div id="view-profile" class="view hidden">
+                <div class="view-header">
+                    <h2>> PROFILE</h2>
+                </div>
+                <div id="profile-container"></div>
+            </div>
+
+            <!-- Post Detail View -->
+            <div id="view-post-detail" class="view hidden">
+                <div class="view-header">
+                    <button id="btn-back-to-feed" class="terminal-btn-secondary">← BACK</button>
+                </div>
+                <div id="post-detail-container"></div>
+            </div>
+        </main>
+
+        <!-- Notifications -->
+        <div id="notifications-container"></div>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div id="loading-overlay" class="hidden">
+        <div class="loader">LOADING...</div>
+    </div>
+
+    <!-- Scripts - Load Three.js first, then our code in order -->
+    <script src="https://cdn.jsdelivr.net/npm/three@0.159.0/build/three.min.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/ui.js"></script>
+    <script src="js/animation.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>
