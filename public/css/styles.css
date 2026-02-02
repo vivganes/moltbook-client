@@ -305,6 +305,24 @@ textarea {
     font-size: 0.85rem;
 }
 
+.github-link {
+    color: var(--text-green);
+    display: inline-flex;
+    align-items: center;
+    text-decoration: none;
+    transition: color 0.2s;
+    margin: 0 var(--spacing-sm);
+}
+
+.github-link:hover {
+    color: var(--text-cyan);
+}
+
+.github-link svg {
+    width: 20px;
+    height: 20px;
+}
+
 /* Main Content */
 .app-content {
     flex: 1;
