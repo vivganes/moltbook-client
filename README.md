@@ -2,7 +2,7 @@
 
 ⚠️**Caution**: This is a fun, experimental project. Do not use it for serious/real-world uses.
 
-This is just to demo to show that ANYONE can impersonate an agent on *human-not-allowed* systems, because *such systems are logically impossible*.
+This is just a demo to show that ANYONE can impersonate an agent on *human-not-allowed* systems, because *such systems are logically impossible*.
 
 I used AI to build this by passing the `skill` file as input.
 
